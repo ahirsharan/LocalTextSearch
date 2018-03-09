@@ -3,6 +3,7 @@ import re
 import glob
 import json
 from datetime import datetime
+from collections import OrderedDict
 #NEED TO TEST MORE.
 
 #input = [file1, file2, ...]
@@ -32,8 +33,13 @@ class Query:
 		string = pattern.sub(' ',string)
 		result = []
 		for word in string.split():
-			result += self.one_word_query(word)
-		return self.rankResults(list(set(result)), string)
+			result.append(self.one_word_query(word))
+		return result
+		# result = []
+		# for word in string.split():
+		# 	result += self.one_word_query(word)
+		# return self.rankResults(list(set(result)), string)
+
 
 	#inputs = 'query string', {word: {filename: [pos1, pos2, ...], ...}, ...}
 	#inter = {filename: [pos1, pos2]}
@@ -116,23 +122,63 @@ class Query:
 		results = [x[1] for x in results]
 		return results
 
-
-"""Do this:
-	Calculate a tf-idf score for every unique term in the collection, for each document. As in, find all unique terms, and for each document, got through
-	each unique term and calculate a tf-idf score for it in the doc. You can do this already with the generateScore function. Doc becomes array of scores.
-	Calculate a tf-idf score for every unique term in the collection for the query.
-	Find the cosine distance between each document and the query, and put the results in descending order.
-"""
 r = []
 startTime = datetime.now()
 for name in glob.glob('*.txt'):
 	r.append(name)
 q = Query(r)
-print ("time= ")
+print ("TIME TO INDEX = ")
 print (datetime.now() - startTime)
 pat = "a"
 while (pat != "!q"):
-	pat = input("\nEnter the search query: ")
-	res = q.one_word_query(pat)
-	print(json.dumps(res, indent = 4))
-#print(res)
+	pat = input("\nENTER THE SEARCH QUERY: ")
+	print()
+	if(pat != "!q"):
+		print()
+		res = q.free_text_query(pat)
+		#print(json.dumps(res, indent = 4)
+		c=0
+		se = set(res[0]).intersection(*res)
+
+
+		# dictionary response
+		# print("PARTS OF PATTERN FOUND IN: ")
+		# for word in pat.split():
+		# 	print(word)
+		# 	print()
+		# 	print(json.dumps(res[c], indent = 4, sort_keys=True))
+		# 	print()
+		# 	c += 1
+
+
+		print("COMPLETE PATTERN FOUND IN : ")
+		print()
+		max = 0
+		for keys in se:
+			print(keys)
+		a = pat.split()
+		print()
+		print("SEPERATE WORDS FOUND IN:")
+		print()
+		c = 0
+		for terms in res:
+			print("WORD IS:")
+			print("----------"),
+			print(a[c])
+			print("----------")
+			print()
+			rank = {}
+			for keys in terms.keys():
+				rank[len(terms[keys])] =keys
+			qw = sorted(rank)
+			for x in qw:
+				print("FILE NAME:")
+				print()
+				print(rank[x])
+				print()
+				print("LOCATION IN THE FILE: ")
+				print()
+				print(terms[rank[x]])
+				print()
+
+			c += 1
