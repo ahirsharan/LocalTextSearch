@@ -1,26 +1,23 @@
 # Lexycon
-Algorithm to search a string in all txt files in a folder.
+Lexycon is a command-line tool that will revolutionise the way you search.
 
-How to use?
+How do I use Lexycon?
 
 Give "!q" (without quotes) as query for stopping the script
 
-For BM implementation
+For an Boyer-Moore Search Implementation
 
 Place bm.py in the folder containing the text file to be searched.
 Open terminal in the same folder, type
 
   $python bm.py
 
-play along! 
+For a Word-indexing Implementation
 
-For indexing implementation
-
-Place the buildindex.py and querytexts.py in the same folder where alll the txt files to be searched is places
+Place the buildindex.py and querytexts.py in the same folder as all the text files to be searched.
 
   $python3 querytexts.py
 
-play along!
 
 Sample output by indexing all files in Corpus:
 
