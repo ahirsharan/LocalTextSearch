@@ -26,7 +26,7 @@ class Query:
 			r = self.invertedIndex[word]
 			return r
 		else:
-			return []
+			return None
 
 	def free_text_query(self, string):
 		# pattern = re.compile('[\W_]+')
@@ -136,109 +136,105 @@ def Build(haystack):
 			b.append(word_count + b[-1])
 	return b
 
+# main
 r = []
+CRED = '\033[42m'
+CRED22 = '\033[104m'
+CRED2 = '\033[0m'
 startTime = datetime.now()
 for name in glob.glob('*.txt'):
 	r.append(name)
 q = Query(r)
-print ("TIME TO INDEX = ")
-print (datetime.now() - startTime)
+print (CRED + "TIME TO INDEX = " + CRED2)
+ti = datetime.now() - startTime
+print (ti)
 pat = "a"
 while (pat != "!q"):
-	pat = input("\nENTER THE SEARCH QUERY: ")
+	print()
+	pat = input(CRED + "ENTER THE SEARCH QUERY: " + CRED2)
 	print()
 	if(pat != "!q"):
 		print()
 		res = q.free_text_query(pat)
 		#print(json.dumps(res, indent = 4)
-		c=0
-		se = set(res[0]).intersection(*res)
+		if(res != None):
+			c=0
+			se = set(res[0]).intersection(*res)
 
 
-		# dictionary response
-		# print("PARTS OF PATTERN FOUND IN: ")
-		# for word in pat.split():
-		# 	print(word)
-		# 	print()
-		# 	print(json.dumps(res[c], indent = 4, sort_keys=True))
-		# 	print()
-		# 	c += 1
+			# dictionary response
+			# print("PARTS OF PATTERN FOUND IN: ")
+			# for word in pat.split():
+			# 	print(word)
+			# 	print()
+			# 	print(json.dumps(res[c], indent = 4, sort_keys=True))
+			# 	print()
+			# 	c += 1
 
-		print("COMPLETE PATTERN FOUND IN : ")
-		print()
-		max = 0
-		for keys in se:
-			print(keys)
-		a = pat.split()
-		print()
-		print("SEPERATE WORDS FOUND IN:")
-		print()
-		c = 0
-		for terms in res:
-			print("WORD IS:")
-			print("----------"),
-			print(a[c])
-			print("----------")
+			print(CRED + "COMPLETE PATTERN FOUND IN : " + CRED2)
 			print()
-			print("terms")
-			#print(terms)
+			max = 0
+			for keys in se:
+				print(keys)
+			a = pat.split()
 			print()
-			rank = dict()
-			for keys in terms.keys():
-				length = len(terms[keys])
-				if length in rank.keys():
-					rank[length].append(keys)
-					# print("sarara")
-					# print(rank[length])
-				else:
-					rank[length] = []
-					rank[length].append(keys)
-
-			print(rank)
-
-			# rank = {}
-			# for keys in terms.keys():
-			# 	rank[len(terms[keys])] =keys
-			qw = sorted(rank)
-			#print(qw)
-			for n in qw:
-				for x in rank[n]:
-					#x is a filename
-					# print(rank[x])
-					# print()
-
-					print("FILE NAME:")
-					print()
-					print(x)
-
-					# WORD NUMBER IN FILE
-					# print("WORD NUMBER IN THE FILE: ")
-					# print()
-					# print(terms[x])
-					# print()
-
-					#line NUMBER
-					with open(x, 'r') as myfile:
-						block=myfile.readlines()
-					word_data = Build(block)
-					# print("WORD DATA:")
-					# print(word_data)
-					print("FOUND AT LINE NUMBER:")
-					for y in terms[x]:
-						line_number = 0
-						for z in word_data:
-							if(z >= y):
-								print(line_number + 1)
-								break
-							else:
-								line_number += 1
-
+			print(CRED + "SEPERATE WORDS FOUND IN:" + CRED2)
 			print()
-			pat_search = q.phrase_query(pat)
-			print("RESULT FOUND IN INCREASING ORDER OF RELEVANCE IN: ")
-			print()
-			for item in pat_search:
-				print(item)
+			c = 0
+			for terms in res:
+				print(CRED + "WORD IS:" + CRED2)
+				print("----------"),
+				print(a[c])
+				print("----------")
+				print()
+
+				rank = dict()
+				for keys in terms.keys():
+					length = len(terms[keys])
+					if length in rank.keys():
+						rank[length].append(keys)
+					else:
+						rank[length] = []
+						rank[length].append(keys)
+
+				# print(rank)
+				qw = sorted(rank)
+
+				# qw has the index in x of documents in increasing
+				# order of frequency of query
+				for n in qw:
+					for x in rank[n]:
+						#x is a filename
+						print(CRED + "FILE NAME:" + CRED2)
+						print("*******")
+						print(x)
+						print("*******")
+						# WORD NUMBER IN FILE
+						# print("WORD NUMBER IN THE FILE: ")
+						# print()
+						# print(terms[x])
+						# print()
+
+						#line NUMBER
+						with open(x, 'r') as myfile:
+							block=myfile.readlines()
+						word_data = Build(block)
+						print(CRED + "FOUND AT LINE NUMBER:" + CRED2)
+						for y in terms[x]:
+							line_number = 0
+							for z in word_data:
+								if(z >= y):
+									print(line_number + 1)
+									break
+								else:
+									line_number += 1
+
+				print()
+				pat_search = q.phrase_query(pat)
+				print(CRED + "RESULT FOUND IN INCREASING ORDER OF RELEVANCE IN: " + CRED2)
+				print()
+				for item in pat_search:
+					print(item)
 
 
-			c += 1
+				c += 1
