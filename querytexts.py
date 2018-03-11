@@ -18,8 +18,8 @@ class Query:
 
 
 	def one_word_query(self, word):
-		pattern = re.compile('[\W_]+')
-		word = pattern.sub(' ',word)
+		# pattern = re.compile('[\W_]+')
+		# word = pattern.sub(' ',word)
 		#print(self.invertedIndex)
 		if word in self.invertedIndex.keys():
 			#return self.rankResults([filename for filename in self.invertedIndex[word]], word)
@@ -29,8 +29,8 @@ class Query:
 			return []
 
 	def free_text_query(self, string):
-		pattern = re.compile('[\W_]+')
-		string = pattern.sub(' ',string)
+		# pattern = re.compile('[\W_]+')
+		# string = pattern.sub(' ',string)
 		result = []
 		for word in string.split():
 			result.append(self.one_word_query(word))
@@ -122,6 +122,20 @@ class Query:
 		results = [x[1] for x in results]
 		return results
 
+def Build(haystack):
+	b = []
+	c=0
+	for line in block:
+		pattern = re.compile('[\W_]+')
+		line = pattern.sub(' ',line)
+		word_count = len(line.split())
+		if(c == 0):
+			b.append(word_count)
+			c=1
+		else:
+			b.append(word_count + b[-1])
+	return b
+
 r = []
 startTime = datetime.now()
 for name in glob.glob('*.txt'):
@@ -150,7 +164,6 @@ while (pat != "!q"):
 		# 	print()
 		# 	c += 1
 
-
 		print("COMPLETE PATTERN FOUND IN : ")
 		print()
 		max = 0
@@ -167,18 +180,65 @@ while (pat != "!q"):
 			print(a[c])
 			print("----------")
 			print()
-			rank = {}
+			print("terms")
+			#print(terms)
+			print()
+			rank = dict()
 			for keys in terms.keys():
-				rank[len(terms[keys])] =keys
+				length = len(terms[keys])
+				if length in rank.keys():
+					rank[length].append(keys)
+					# print("sarara")
+					# print(rank[length])
+				else:
+					rank[length] = []
+					rank[length].append(keys)
+
+			print(rank)
+
+			# rank = {}
+			# for keys in terms.keys():
+			# 	rank[len(terms[keys])] =keys
 			qw = sorted(rank)
-			for x in qw:
-				print("FILE NAME:")
-				print()
-				print(rank[x])
-				print()
-				print("LOCATION IN THE FILE: ")
-				print()
-				print(terms[rank[x]])
-				print()
+			#print(qw)
+			for n in qw:
+				for x in rank[n]:
+					#x is a filename
+					# print(rank[x])
+					# print()
+
+					print("FILE NAME:")
+					print()
+					print(x)
+
+					# WORD NUMBER IN FILE
+					# print("WORD NUMBER IN THE FILE: ")
+					# print()
+					# print(terms[x])
+					# print()
+
+					#line NUMBER
+					with open(x, 'r') as myfile:
+						block=myfile.readlines()
+					word_data = Build(block)
+					# print("WORD DATA:")
+					# print(word_data)
+					print("FOUND AT LINE NUMBER:")
+					for y in terms[x]:
+						line_number = 0
+						for z in word_data:
+							if(z >= y):
+								print(line_number + 1)
+								break
+							else:
+								line_number += 1
+
+			print()
+			pat_search = q.phrase_query(pat)
+			print("RESULT FOUND IN INCREASING ORDER OF RELEVANCE IN: ")
+			print()
+			for item in pat_search:
+				print(item)
+
 
 			c += 1
