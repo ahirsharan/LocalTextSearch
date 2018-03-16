@@ -26,7 +26,7 @@ class Query:
 			r = self.invertedIndex[word]
 			return r
 		else:
-			return None
+			return {}
 
 	def free_text_query(self, string):
 		# pattern = re.compile('[\W_]+')
@@ -174,11 +174,15 @@ while (pat != "!q"):
 			print(CRED + "COMPLETE PATTERN FOUND IN : " + CRED2)
 			print()
 			max = 0
+			if len(se) == 0:
+				print("--------------------------------")
+				print("Complete Pattern is not present")
+				print("--------------------------------")
 			for keys in se:
 				print(keys)
 			a = pat.split()
 			print()
-			print(CRED + "SEPERATE WORDS FOUND IN:" + CRED2)
+			print(CRED + "SEPARATE WORDS FOUND IN -" + CRED2)
 			print()
 			c = 0
 			for terms in res:
@@ -233,6 +237,10 @@ while (pat != "!q"):
 				pat_search = q.phrase_query(pat)
 				print(CRED + "RESULT FOUND IN INCREASING ORDER OF RELEVANCE IN: " + CRED2)
 				print()
+				if len(pat_search) == 0:
+					print("-----------------")
+					print("No Result Found")
+					print("-----------------")
 				for item in pat_search:
 					print(item)
 
