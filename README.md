@@ -8,3 +8,5 @@ To search a file, place it in the same directory as pygrep.py, browse there and 
 ```
 python pygrep.py filename.txt
 ```
+pygrep.py will search only one file at a time
+
