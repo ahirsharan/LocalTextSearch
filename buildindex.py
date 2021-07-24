@@ -24,7 +24,7 @@ class BuildIndex:
 		for file in self.filenames:
 			#stopwords = open('stopwords.txt').read().close()
 			pattern = re.compile('[\W_]+')
-			file_to_terms[file] = open(file, 'r').read().lower();
+			file_to_terms[file] = open(file, 'r', encoding="utf8").read().lower()
 			file_to_terms[file] = pattern.sub(' ',file_to_terms[file])
 			re.sub(r'[\W_]+','', file_to_terms[file])
 			file_to_terms[file] = file_to_terms[file].split()

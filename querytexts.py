@@ -220,7 +220,7 @@ while (pat != "!q"):
 						# print()
 
 						#line NUMBER
-						with open(x, 'r') as myfile:
+						with open(x, 'r', encoding="utf8") as myfile:
 							block=myfile.readlines()
 						word_data = Build(block)
 						print(CRED + "FOUND AT LINE NUMBER:" + CRED2)
