@@ -22,6 +22,9 @@ Enter your desired query and get which all files have that and at which location
 ### Boyer Moore Implementation:
 
 Boyer Moore's searching algorithm is implemented in bm.py. It is a bit slower but it works.
+```
+python3 bm.py
+```
 
 ## To Dos
 - [x] Implement Cosine-inverse Ranking system
