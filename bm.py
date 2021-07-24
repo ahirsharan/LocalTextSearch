@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     filename = input("Enter the name of file to be searched (with extension): ")
     if os.path.isfile(filename):
-        with open(filename, 'r') as myfile:
+        with open(filename, 'r', encoding="utf8") as myfile:
             text = myfile.read()
 
         pattern = input("Enter the pattern to be searched: ")

@@ -15,7 +15,7 @@ python3 pygrep.py filename.txt
 
 Te search multiple files at once, keep the buildindex.py and querytext.py in same folder as all the text files. then run
 ```
-python3 querytext.py
+python3 querytexts.py
 ```
 Enter your desired query and get which all files have that and at which location.
 
@@ -25,5 +25,5 @@ Boyer Moore's searching algorithm is implemented in bm.py. It is a bit slower bu
 
 ## To Dos
 - [x] Implement Cosine-inverse Ranking system
-- [ ] Make code compatibl to capital letters
-- [ ] Make a GUI using Tkniter
+- [ ] Make code compatible to capital letters
+- [ ] Create a GUI using tkinter

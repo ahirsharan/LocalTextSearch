@@ -41,7 +41,7 @@ def first_index(position, position_list):
 pattern = input("Enter pattern to match: ")
 
 for file in sys.argv[1:]:
-    with open(file, 'r') as f:
+    with open(file, 'r', encoding="utf8") as f:
         text = f.read()
 
         # check the file text
